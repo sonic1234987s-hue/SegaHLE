@@ -12,15 +12,25 @@ jobs:
     steps:
       - name: Checkout SegaHLE Code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Android NDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK Component
+        run: sdkmanager "ndk;25.2.9519653"
 
       - name: Setup Rust Compiler
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: armv7-linux-androideabi, aarch64-linux-android
+          targets: aarch64-linux-android, armv7-linux-androideabi
 
-      - name: Build Android Package
+      - name: Build Android App Binary
+        env:
+          ANDROID_NDK_ROOT: ${{ env.ANDROID_HOME }}/ndk/25.2.9519653
         run: |
-          echo "Building SegaHLE for Android..."
+          echo "Compiling SegaHLE Core..."
           cargo build --release --target aarch64-linux-android
 
       - name: Upload SegaHLE APK
