@@ -132,4 +132,5 @@ pub struct State {
     mach_vm: mach::vm_map::State,
     malloc: malloc::State,
     mman: sys::mman::State,
-}
+crate::frameworks::uikit::init_uiproxy_object_fix(env);
+
