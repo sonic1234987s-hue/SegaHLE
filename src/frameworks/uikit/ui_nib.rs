@@ -434,6 +434,5 @@ extern "C" fn ui_proxy_object_init_with_coder(this: Id, _cmd: Id, _coder: Id) ->
     this
 }
 
-extern "C" fn ui_proxy_object_target_for_action(_this: Id, _cmd: Id, _action: Id, _sender: Id) -> Id {
-    0 
+extern "C" fn ui_proxy_object_target_for_action(_this: Id, _cmd: Id, _action: Id, _sender: Id) -> Id 0 
 }
