@@ -401,3 +401,39 @@ fn load_nib_file(env: &mut Environment, ui_nib: id, path: GuestPathBuf) -> Resul
 
     Ok(unarchiver)
 }
+use crate::environment::Environment;
+use crate::objc::{Class, Object, Id};
+use std::os::raw::c_char;
+
+pub struct UIProxyObjectReplacement;
+
+impl UIProxyObjectReplacement {
+    pub fn register(env: &mut Environment) {
+        let superclass = env.objc_root_env.get_class("NSObject")
+            .expect("Error: NSObject root not found in the emulator.");
+            
+        let mut cls = env.objc_root_env.new_class("UIProxyObject", superclass);
+
+        cls.add_method(
+            sel!(initWithCoder:),
+            ui_proxy_object_init_with_coder as extern "C" fn(Id, Id, Id) -> Id,
+        );
+
+        cls.add_method(
+            sel!(targetForAction:withSender:),
+            ui_proxy_object_target_for_action as extern "C" fn(Id, Id, Id, Id) -> Id,
+        );
+
+        env.objc_root_env.register_class(cls);
+        log::info!("SegaHLE: UIProxyObject registered successfully!");
+    }
+}
+
+extern "C" fn ui_proxy_object_init_with_coder(this: Id, _cmd: Id, _coder: Id) -> Id {
+    log::info!("SegaHLE: Safely ignoring IBFirstResponder in UIProxyObject.");
+    this
+}
+
+extern "C" fn ui_proxy_object_target_for_action(_this: Id, _cmd: Id, _action: Id, _sender: Id) -> Id {
+    0 
+}
