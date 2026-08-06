@@ -13,7 +13,9 @@ jobs:
       - name: Checkout SegaHLE Code
         uses: actions/checkout@v4
         with:
+        fetch-depth: 0
           submodules: recursive
+          persist-credentials: false
 
       - name: Setup Android NDK
         uses: android-actions/setup-android@v3
@@ -38,3 +40,4 @@ jobs:
         with:
           name: SegaHLE-Android-App
           path: target/aarch64-linux-android/release/
+Fix checkout
