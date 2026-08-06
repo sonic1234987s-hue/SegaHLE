@@ -1,3 +1,7 @@
+pub fn __dyld_register_func_for_add_image(&mut self, _func_ptr: u32) -> u32 {
+    log::info!("Mapeado stub para: __dyld_register_func_for_add_image");
+    0 
+}
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
